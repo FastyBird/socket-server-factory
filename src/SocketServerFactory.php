@@ -38,21 +38,21 @@ class SocketServerFactory
 	/** @var EventDispatcher\EventDispatcherInterface */
 	private EventDispatcher\EventDispatcherInterface $dispatcher;
 
-	/** @var EventLoop\LoopInterface */
-	private EventLoop\LoopInterface $eventLoop;
+	/** @var EventLoop\LoopInterface|null */
+	private ?EventLoop\LoopInterface $eventLoop;
 
 	/**
 	 * @param string $serverAddress
 	 * @param int $serverPort
-	 * @param EventLoop\LoopInterface $eventLoop
 	 * @param EventDispatcher\EventDispatcherInterface $dispatcher
+	 * @param EventLoop\LoopInterface|null $eventLoop
 	 * @param string|null $serverCertificate
 	 */
 	public function __construct(
 		string $serverAddress,
 		int $serverPort,
-		EventLoop\LoopInterface $eventLoop,
 		EventDispatcher\EventDispatcherInterface $dispatcher,
+		?EventLoop\LoopInterface $eventLoop = null,
 		?string $serverCertificate = null
 	) {
 		$this->serverAddress = $serverAddress;
@@ -65,12 +65,22 @@ class SocketServerFactory
 	}
 
 	/**
+	 * @param EventLoop\LoopInterface|null $eventLoop
+	 *
 	 * @return Socket\ServerInterface
 	 */
-	public function create(): Socket\ServerInterface
+	public function create(?EventLoop\LoopInterface $eventLoop = null): Socket\ServerInterface
 	{
+		if ($this->eventLoop === null && $eventLoop === null) {
+			throw new Exceptions\InvalidStateException('React Event loop instance is missing. Register service or provide it in create call');
+		}
+
+		if ($eventLoop === null) {
+			$eventLoop = $this->eventLoop;
+		}
+
 		try {
-			$server = new Socket\SocketServer($this->serverAddress . ':' . $this->serverPort, [], $this->eventLoop);
+			$server = new Socket\SocketServer($this->serverAddress . ':' . $this->serverPort, [], $eventLoop);
 
 		} catch (RuntimeException $ex) {
 			throw new Exceptions\InvalidStateException('Socket server could not be created', $ex->getCode(), $ex);
@@ -81,7 +91,7 @@ class SocketServerFactory
 				is_file($this->serverCertificate)
 				&& file_exists($this->serverCertificate)
 			) {
-				$server = new Socket\SecureServer($server, $this->eventLoop, [
+				$server = new Socket\SecureServer($server, $eventLoop, [
 					'local_cert' => $this->serverCertificate,
 				]);
 
