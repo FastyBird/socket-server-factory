@@ -15,9 +15,9 @@ This is a [Nette framework](https://nette.org) extension which is implementing [
 
 ### Features:
 
-- Build-in [PSR-7](http://www.php-fig.org/psr/psr-7/) extendable router
-- Build-in http server with SSL support
-- Extendable via [PSR-7](http://www.php-fig.org/psr/psr-7/) middleware
+- Support for creating SSL certificate secured server
+- Automatically create ReactPHP event loop for other services 
+- Trigger event when server is created
 
 ## Installation
 

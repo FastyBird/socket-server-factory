@@ -59,10 +59,13 @@ class SocketServerFactoryExtension extends DI\CompilerExtension
 	public function getConfigSchema(): Schema\Schema
 	{
 		return Schema\Expect::structure([
-			'address'     => Schema\Expect::string('127.0.0.1'),
-			'port'        => Schema\Expect::int(8000),
-			'certificate' => Schema\Expect::string(null)
-				->nullable(),
+			'server'    => Schema\Expect::structure([
+				'address'     => Schema\Expect::string('127.0.0.1'),
+				'port'        => Schema\Expect::int(8000),
+				'certificate' => Schema\Expect::string(null)
+					->nullable(),
+			]),
+			'eventLoop' => Schema\Expect::bool(true),
 		]);
 	}
 
@@ -78,14 +81,16 @@ class SocketServerFactoryExtension extends DI\CompilerExtension
 		$builder->addDefinition($this->prefix('socketServer.factory'), new DI\Definitions\ServiceDefinition())
 			->setType(SocketServerFactory\SocketServerFactory::class)
 			->setArguments([
-				'serverAddress'     => $configuration->address,
-				'serverPort'        => $configuration->port,
-				'serverCertificate' => $configuration->certificate,
+				'serverAddress'     => $configuration->server->address,
+				'serverPort'        => $configuration->server->port,
+				'serverCertificate' => $configuration->server->certificate,
 			]);
 
-		$builder->addDefinition('react.eventLoop', new DI\Definitions\ServiceDefinition())
-			->setType(EventLoop\LoopInterface::class)
-			->setFactory('React\EventLoop\Factory::create');
+		if ($configuration->eventLoop) {
+			$builder->addDefinition('react.eventLoop', new DI\Definitions\ServiceDefinition())
+				->setType(EventLoop\LoopInterface::class)
+				->setFactory('React\EventLoop\Factory::create');
+		}
 	}
 
 }
