@@ -11,4 +11,4 @@
 # @date			06.10.21
 
 php:
-	date.timezone: Europe/Prague
+    date.timezone: Europe/Prague
