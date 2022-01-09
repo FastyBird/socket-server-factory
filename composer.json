@@ -29,16 +29,23 @@
     }
   ],
 
+  "support": {
+    "email": "code@fastybird.com",
+    "issues": "https://github.com/FastyBird/socket-server-factory/issues",
+    "source" : "https://github.com/FastyBird/socket-server-factory"
+  },
+
   "prefer-stable" : true,
 
   "minimum-stability" : "stable",
 
   "require" : {
     "php": ">=7.4.0|>=8.0.0",
-    "contributte/event-dispatcher": "^0.8",
     "nette/bootstrap": "^3.1",
     "nette/di": "^3.0",
-    "react/socket": "^1.9"
+    "psr/event-dispatcher": "^1.0",
+    "react/socket": "^1.9",
+    "symfony/event-dispatcher-contracts": "^2.5|^3.0"
   },
 
   "require-dev" : {

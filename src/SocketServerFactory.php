@@ -35,8 +35,8 @@ class SocketServerFactory
 	/** @var string|null */
 	private ?string $serverCertificate;
 
-	/** @var EventDispatcher\EventDispatcherInterface */
-	private EventDispatcher\EventDispatcherInterface $dispatcher;
+	/** @var EventDispatcher\EventDispatcherInterface|null */
+	private ?EventDispatcher\EventDispatcherInterface $dispatcher;
 
 	/** @var EventLoop\LoopInterface|null */
 	private ?EventLoop\LoopInterface $eventLoop;
@@ -51,7 +51,7 @@ class SocketServerFactory
 	public function __construct(
 		string $serverAddress,
 		int $serverPort,
-		EventDispatcher\EventDispatcherInterface $dispatcher,
+		?EventDispatcher\EventDispatcherInterface $dispatcher = null,
 		?EventLoop\LoopInterface $eventLoop = null,
 		?string $serverCertificate = null
 	) {
@@ -100,7 +100,9 @@ class SocketServerFactory
 			}
 		}
 
-		$this->dispatcher->dispatch(new Events\InitializeEvent($server));
+		if ($this->dispatcher !== null) {
+			$this->dispatcher->dispatch(new Events\InitializeEvent($server));
+		}
 
 		return $server;
 	}
