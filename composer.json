@@ -1,7 +1,7 @@
 {
   "name": "fastybird/socket-server-factory",
   "type": "library",
-  "description": "FastyBird ReactPHP Socket server factory",
+  "description": "Easy ReactPHP Socket server factory",
   "keywords": [
     "fastybird",
     "fb",
