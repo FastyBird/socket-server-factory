@@ -66,11 +66,16 @@ class SocketServerFactory
 
 	/**
 	 * @param EventLoop\LoopInterface|null $eventLoop
+	 * @param string|null $serverAddress
+	 * @param int|null $serverPort
 	 *
 	 * @return Socket\ServerInterface
 	 */
-	public function create(?EventLoop\LoopInterface $eventLoop = null): Socket\ServerInterface
-	{
+	public function create(
+		?EventLoop\LoopInterface $eventLoop = null,
+		?string $serverAddress = null,
+		?int $serverPort = null
+	): Socket\ServerInterface {
 		if ($this->eventLoop === null && $eventLoop === null) {
 			throw new Exceptions\InvalidStateException('React Event loop instance is missing. Register service or provide it in create call');
 		}
@@ -80,7 +85,7 @@ class SocketServerFactory
 		}
 
 		try {
-			$server = new Socket\SocketServer($this->serverAddress . ':' . $this->serverPort, [], $eventLoop);
+			$server = new Socket\SocketServer(($serverAddress ?? $this->serverAddress) . ':' . ($serverPort ?? $this->serverPort), [], $eventLoop);
 
 		} catch (RuntimeException $ex) {
 			throw new Exceptions\InvalidStateException('Socket server could not be created', $ex->getCode(), $ex);
@@ -96,7 +101,7 @@ class SocketServerFactory
 				]);
 
 			} else {
-				throw new Exceptions\InvalidArgumentException('Provided SSL certiificate file could not be loaded');
+				throw new Exceptions\InvalidArgumentException('Provided SSL certificate file could not be loaded');
 			}
 		}
 
