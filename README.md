@@ -11,12 +11,13 @@
 
 ## What is FastyBird web server library?
 
-This is a [Nette framework](https://nette.org) extension which is implementing [ReactPHP](https://reactphp.org) socket server factory.
+This is a [Nette framework](https://nette.org) extension which is implementing [ReactPHP](https://reactphp.org) socket
+server factory.
 
 ### Features:
 
 - Support for creating SSL certificate secured server
-- Automatically create ReactPHP event loop for other services 
+- Automatically create ReactPHP event loop for other services
 - Trigger event when server is created
 
 ## Installation
@@ -29,7 +30,9 @@ composer require fastybird/socket-server-factory
 
 ## Documentation
 
-Learn how to build and use socket server in [documentation](https://github.com/FastyBird/socket-server-factory/blob/master/.docs/en/index.md).
+Learn how to build and use socket server
+in [documentation](https://github.com/FastyBird/socket-server-factory/blob/master/.docs/en/index.md).
 
 ***
-Homepage [https://www.fastybird.com](https://www.fastybird.com) and repository [https://github.com/FastyBird/socket-server-factory](https://github.com/FastyBird/socket-server-factory).
+Homepage [https://www.fastybird.com](https://www.fastybird.com) and
+repository [https://github.com/FastyBird/socket-server-factory](https://github.com/FastyBird/socket-server-factory).
